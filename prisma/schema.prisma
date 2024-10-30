@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  username String @unique
+  password String
+  location String?
+  isPublic Boolean @default(false)
+  posts Post[]
+  charities UserCharity[]
+}
+
+model Post {
+  id Int @id @default(autoincrement())
+  item String
+  description String?
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  charities PostCharity[]
+}
+
+model Charity {
+  id Int @id @default(autoincrement())
+  name String
+  description String?
+  location String
+  wishlists Wishlist[]
+  users UserCharity[]
+  posts PostCharity[]
+}
+
+model Wishlist {
+  id Int @id
+  charityId Int
+  charity Charity @relation(fields: [charityId], references: [id])
+  items WishlistItem[]
+}
+
+model WishlistItem {
+  id Int @id @default(autoincrement())
+  item String
+  wishlistId Int
+  wishlist Wishlist @relation(fields: [wishlistId], references: [id])
+}
+
+model UserCharity {
+  userId Int
+  charityId Int
+  user User @relation(fields: [userId], references: [id])
+  charity Charity @relation(fields: [charityId], references: [id])
+
+  @@id([userId, charityId])
+}
+
+model PostCharity {
+  postId Int
+  charityId Int
+  post Post @relation(fields: [postId], references: [id])
+  charity Charity @relation(fields: [charityId], references: [id])
+
+  @@id([postId, charityId])
+}

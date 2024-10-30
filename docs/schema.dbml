@@ -1,0 +1,52 @@
+Table users {
+  id integer [primary key, increment]
+  username varchar [unique, not null]
+  password varchar [not null]
+  location varchar
+  is_public boolean [default: false]
+}
+
+Table posts {
+  id integer [primary key, increment]
+  item varchar [not null]
+  description text
+  user_id integer
+}
+
+Table charities {
+  id integer [primary key, increment]
+  name varchar [not null]
+  description text
+  location varchar [not null]
+}
+
+Table wishlists {
+  id integer [primary key]
+  charity_id integer
+}
+
+Table wishlist_items {
+  id integer [primary key, increment]
+  item varchar [not null]
+  wishlist_id integer
+}
+
+Table user_charities {
+  user_id integer 
+  charity_id integer
+  primary key (user_id, charity_id)
+}
+
+Table post_charity {
+  post_id integer
+  charity_id integer
+  primary key (post_id, charity_id)
+}
+
+Ref: posts.user_id > users.id 
+Ref: wishlists.charity_id > charities.id
+Ref: wishlist_items.wishlist_id > wishlists.id
+Ref: user_charities.user_id > users.id
+Ref: user_charities.charity_id > charities.id
+Ref: post_charity.post_id > posts.id
+Ref: post_charity.charity_id > charities.id

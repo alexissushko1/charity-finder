@@ -1,0 +1,18 @@
+{
+  "name": "charity-finder",
+  "version": "1.0.0",
+  "description": "Charity Finder is a platform to help users find places to donate belongings to a good cause.",
+  "main": "server.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {},
+  "author": "Alexis Sushko",
+  "license": "ISC",
+  "devDependencies": {
+    "prisma": "^5.21.1"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.21.1"
+  }
+}
